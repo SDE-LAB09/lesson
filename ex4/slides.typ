@@ -53,7 +53,7 @@
 - Reuse LITELLM_CHAT_URL, LITELLM_MODEL and LITELLM_KEY from Exercise 3.
 - Ask for a factual summary without invented findings or diagnoses.
 
-#terminal("jq -n --rawfile data snapshot.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,messages:[{role:\"user\", \\\n  content:(\"Summarize this care episode. \"+\n  \"No invented facts or diagnosis.\\n\"+$data)}]}' \\\n  > summary-request.json",
+#terminal("jq -n --rawfile data snapshot.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,\n    messages:[{role:\"user\",\n      content:(\"Summarize this care episode. \" +\n        \"No invented diagnoses or facts.\\n\" + $data)}]}' > summary-request.json",
   title: [shell / summary request], font-size: 8.5pt)
 
 == Step 4 — Call LiteLLM

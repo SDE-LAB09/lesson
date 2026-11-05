@@ -53,7 +53,7 @@
 
 == Step 4 — Build prompt
 // jq --rawfile inserts the entire JSON file as plain text into the prompt.
-#terminal("jq -n --rawfile data queue.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,messages:[{role:\"user\", \\\n  content:(\"Summarize the hospital queue. \"+\n  \"Use only the JSON; report unknowns.\\n\"+$data)}]}' \\\n  > llm-request.json",
+#terminal("jq -n --rawfile data queue.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,\n    messages:[{role:\"user\",\n      content:(\"Summarize the hospital queue. \" +\n        \"Use only the JSON; report unknowns.\\n\" + $data)}]}' > llm-request.json",
   title: [shell / JSON request], font-size: 8.5pt)
 
 - Verify llm-request.json using jq before sending it.
