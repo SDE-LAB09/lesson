@@ -18,7 +18,7 @@
     align(right, text(fill: rgb("#B5C7D3"), size: 9pt)[#title]),
   )
   #v(10pt)
-  #text(font: "DejaVu Sans Mono", size: font-size, fill: rgb("#E2EEF7"))[
+  #text(font: "DejaVu Sans Mono", size: font-size * 1.5, fill: rgb("#E2EEF7"))[
     #raw(code, block: true, theme: none)
   ]
 ]

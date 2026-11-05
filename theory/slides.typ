@@ -7,7 +7,7 @@
 #import "../components/terminal.typ": terminal
 #show: touying-set-config.with(config-info(author: [Matteo Girardi]))
 
-= Theory — e-CREAM and its APIs
+= Theory
 
 == What is eCREAM?
 - *eCREAM:* enabling Clinical Research in Emergency and Acute care Medicine through automated data extraction.
@@ -25,7 +25,7 @@
 
 #text(size: 10pt, fill: gray)[Source: D3.2, pp. 6–8 (design choice at publication).]
 
-== Architecture: frontend, BFF, backend
+== Architecture overview
 #align(center)[#platform-architecture()]
 
 - ER/Admin dashboards are frontends; Web API aggregates backend operations for them.
@@ -43,17 +43,23 @@
 
 #text(size: 10pt, fill: gray)[Source: D3.2, pp. 17–20. The module list is non-exhaustive.]
 
-== Requests, identity and permissions
+== Identity and access
 #align(center)[#access-checks()]
 
-- The design uses HTTP endpoints for synchronous module communication.
-- OIDC-based login provides tokens; services validate them using published JWKS.
-- The separate Permissions module uses Attribute-Based Access Control (ABAC).
-- Internal service-to-service protection includes a planned mTLS mechanism.
+- OIDC-based login provides tokens, validated by platform services using JWKS.
+- The separate Permissions module applies Attribute-Based Access Control.
 
-#text(size: 10pt, fill: gray)[Source: D3.2, pp. 11, 13–16; design, not confirmed runtime.]
+#text(size: 10pt, fill: gray)[Source: D3.2, pp. 13–16; proposed architecture.]
 
-== Interoperability: FHIR and OpenAPI
+== Service communication
+- Modules primarily communicate via synchronous HTTP endpoints.
+- Asynchronous, event-driven interactions are also possible in the design.
+- The FHIR API is exposed for interoperable external requests.
+- Internal microservice communication includes a planned mTLS mechanism.
+
+#text(size: 10pt, fill: gray)[Source: D3.2, pp. 11–12; design, not confirmed runtime.]
+
+== FHIR and OpenAPI
 - *FHIR* is a healthcare data interoperability standard; it defines resources such as Patient and EpisodeOfCare.
 - *OpenAPI* describes how to call this implementation's actual HTTP endpoints.
 - An OpenAPI operation tells us its method, path, required fields, authorization and response schema.
@@ -62,7 +68,7 @@
 #terminal("1. Open /dev and select an operation.\n2. Read Parameters, Request body, Responses.\n3. Execute with the provided sandbox credentials.",
   title: [API discovery], font-size: 9.5pt)
 
-== Our simplified patient journey
+== Patient journey
 #align(center)[#patient-journey()]
 
 - Registration creates or identifies the patient.

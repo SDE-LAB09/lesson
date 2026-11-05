@@ -5,9 +5,9 @@
 #import "../components/terminal.typ": terminal
 #show: touying-set-config.with(config-info(author: [Lorys Mutti]))
 
-= Exercise 2 — Observability
+= Exercise 2
 
-== Why do distributed failures take time?
+== Why observability?
 - A client sees the HTTP request and response.
 - A backend service sees validation, permission and database events.
 - Multiple components may be involved in a single operation.
@@ -15,7 +15,7 @@
 
 *Goal:* correlate an intentional API error with evidence in Grafana.
 
-== Step 0 — Save a working baseline
+== Step 0 — Baseline
 1. Reuse the same API_BASE, PATIENT_PATH and TOKEN from Exercise 1.
 2. Open your successful request and response from registration.
 3. Record the current UTC time before testing.
@@ -24,7 +24,7 @@
 #terminal("date -u '+%Y-%m-%dT%H:%M:%SZ'\ncat patient-headers.txt",
   title: [shell / baseline], font-size: 10pt)
 
-== Step 1 — Trigger a 404-style error
+== Step 1 — Unknown route
 // An unknown route tests routing, not application-level validation.
 #terminal("curl -sS -i \\\n  \"$API_BASE/this-route-does-not-exist\" \\\n  -H \"Authorization: Bearer $TOKEN\"",
   title: [shell / unknown route], font-size: 9.5pt)
@@ -32,7 +32,7 @@
 - Note the status and response body; the exact status depends on routing and authentication.
 - Ask: did the request reach a service or get rejected earlier?
 
-== Step 2 — Trigger JSON validation
+== Step 2 — Invalid JSON
 // Invalid JSON tests parsing; it is not a valid patient registration.
 #terminal("curl -sS -i -X POST \\\n  \"$API_BASE$PATIENT_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary '{invalid-json'",
   title: [shell / malformed JSON], font-size: 9.5pt)
@@ -41,7 +41,7 @@
 - What does the response reveal about input validation?
 - An authorization error must be fixed before interpreting validation.
 
-== Step 3 — Inspect a real error response
+== Step 3 — Capture error
 #terminal("date -u '+%Y-%m-%dT%H:%M:%SZ'\ncurl -sS -D error-headers.txt \\\n  -o error-body.txt -X POST \\\n  \"$API_BASE$PATIENT_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary '{invalid-json'",
   title: [shell / capture evidence], font-size: 9pt)
 
@@ -58,7 +58,7 @@
 
 *Do not assume a fixed Grafana data source, label or dashboard name.*
 
-== Step 5 — Explain the failure
+== Step 5 — Explain error
 - Find a log event with a matching time and request path.
 - Compare the logged error with the HTTP response.
 - Distinguish parse/validation errors from authorization and routing errors.

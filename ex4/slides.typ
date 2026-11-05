@@ -6,7 +6,7 @@
 #import "../components/terminal.typ": terminal
 #show: touying-set-config.with(config-info(author: [Federico Frigerio]))
 
-= Exercise 4 — Snapshot, summary and discharge
+= Exercise 4
 
 == The mission
 1. Retrieve the current EpisodeOfCare snapshot.
@@ -17,7 +17,7 @@
 
 *The LLM does not decide whether discharge is clinically appropriate.*
 
-== Step 0 — Locate the snapshot operation
+== Step 0 — Snapshot API
 - The team lesson plan names this route: 
   #raw("/fhir/epofcare/$snapshot")
 - Find it in #link("https://ehr-test.ecreamproject.eu/dev")[the e-CREAM developer portal].
@@ -27,7 +27,7 @@
 #terminal("export SNAPSHOT_PATH='/fhir/epofcare/$snapshot'\n# Adjust the path/parameters from OpenAPI.",
   title: [shell / snapshot route], font-size: 9.2pt)
 
-== Step 1 — Download the current snapshot
+== Step 1 — Fetch snapshot
 // GET is a demonstration pattern; follow the documented method if different.
 // Quoting SNAPSHOT_PATH in single quotes on the previous slide preserves $.
 #terminal("curl -sS -D snapshot-headers.txt \\\n  -o snapshot.json -X GET \\\n  \"$API_BASE$SNAPSHOT_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Accept: application/json'",
@@ -36,7 +36,7 @@
 - Include any query parameters or episode reference OpenAPI requires.
 - Verify the HTTP status before treating the file as an episode snapshot.
 
-== Step 2 — Inspect the episode data
+== Step 2 — Inspect episode
 #terminal("cat snapshot-headers.txt\njq . snapshot.json",
   title: [shell / inspect snapshot], font-size: 10pt)
 
@@ -47,7 +47,7 @@
 
 *The architecture describes patient state and clinical data as distinct concerns.*
 
-== Step 3 — Prepare an LLM summary
+== Step 3 — Build summary
 - Imagine a doctor who has limited time to review a long record.
 - Use only fictional or properly de-identified snapshot data.
 - Reuse LITELLM_CHAT_URL, LITELLM_MODEL and LITELLM_KEY from Exercise 3.
@@ -56,14 +56,14 @@
 #terminal("jq -n --rawfile data snapshot.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,messages:[{role:\"user\", \\\n  content:(\"Summarize this care episode. \"+\n  \"No invented facts or diagnosis.\\n\"+$data)}]}' \\\n  > summary-request.json",
   title: [shell / summary request], font-size: 8.5pt)
 
-== Step 4 — Send and save the summary
+== Step 4 — Call LiteLLM
 #terminal("curl -sS -D summary-headers.txt \\\n  -o summary-response.json -X POST \\\n  \"$LITELLM_CHAT_URL\" \\\n  -H \"Authorization: Bearer $LITELLM_KEY\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary @summary-request.json",
   title: [shell / LiteLLM], font-size: 8.8pt)
 
 - Confirm that the endpoint returned a successful status.
 - Compare key statements with snapshot.json.
 
-== Step 5 — Prepare discharge
+== Step 5 — Discharge setup
 1. Return to OpenAPI and find the patient/episode discharge operation.
 2. Check whether discharge requires a status, reason or JSON request body.
 3. Perform this action *only* on the fictional test patient.
@@ -72,14 +72,14 @@
 #terminal("export DISCHARGE_PATH='/DISCHARGE_FROM_OPENAPI'\n$EDITOR discharge.json\njq . discharge.json",
   title: [shell / discharge preparation], font-size: 9.2pt)
 
-== Step 6 — Execute and verify discharge
+== Step 6 — Discharge
 // Substitute the method and body only as required by the actual OpenAPI.
 #terminal("curl -sS -D discharge-headers.txt \\\n  -o discharge-response.json -X POST \\\n  \"$API_BASE$DISCHARGE_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary @discharge.json",
   title: [shell / discharge], font-size: 8.8pt)
 
 - Read the response status and confirm the resulting episode state.
 
-== Step 7 — Submit the assignment
+== Step 7 — Submit result
 #terminal("jq -r '.choices[0].message.content' \\\n  summary-response.json > assignment.txt\ncat assignment.txt",
   title: [shell / final artifact], font-size: 9.5pt)
 

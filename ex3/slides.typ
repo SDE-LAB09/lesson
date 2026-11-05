@@ -5,9 +5,9 @@
 #import "../components/terminal.typ": terminal
 #show: touying-set-config.with(config-info(author: [Marco Toniolo]))
 
-= Exercise 3 — Queue insights with LiteLLM
+= Exercise 3
 
-== Goal: turn a queue into a summary
+== Goal: queue summary
 1. Retrieve the current patient queue as JSON.
 2. Inspect its structure and remove sensitive data.
 3. Forward the JSON to the instructor-provided LiteLLM endpoint.
@@ -16,7 +16,7 @@
 
 *An LLM summary is not a clinical recommendation.*
 
-== Step 0 — Find the queue API
+== Step 0 — Queue API
 1. Open the #link("https://ehr-test.ecreamproject.eu/dev")[e-CREAM developer portal].
 2. Locate the operation that returns the patient waiting list/queue.
 3. Note the HTTP method, path, query parameters and response schema.
@@ -25,7 +25,7 @@
 #terminal("export QUEUE_PATH='/QUEUE_PATH_FROM_OPENAPI'\necho \"$API_BASE$QUEUE_PATH\"",
   title: [shell / queue route], font-size: 9.5pt)
 
-== Step 1 — Download the JSON queue
+== Step 1 — Fetch queue
 // Replace GET if OpenAPI documents a different HTTP method.
 #terminal("curl -sS -D queue-headers.txt \\\n  -o queue.json -X GET \\\n  \"$API_BASE$QUEUE_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Accept: application/json'",
   title: [shell / retrieve queue], font-size: 9pt)
@@ -33,7 +33,7 @@
 - Confirm a successful HTTP status.
 - Retain the raw response for validation and comparison.
 
-== Step 2 — Inspect the result
+== Step 2 — Inspect JSON
 #terminal("jq . queue.json\njq 'type' queue.json",
   title: [shell / inspect data], font-size: 10pt)
 
@@ -42,7 +42,7 @@
 - Compare the observed structure with OpenAPI.
 - *Do not forward real patient identifiers to the LLM.*
 
-== Step 3 — Configure LiteLLM
+== Step 3 — LiteLLM setup
 // Enter the full OpenAI-compatible chat-completions URL supplied in class.
 // A server hostname and model name are not documented in D3.2.
 #terminal("export LITELLM_CHAT_URL='https://HOST/CHAT_ENDPOINT'\nexport LITELLM_MODEL='MODEL_FROM_INSTRUCTORS'\nread -rs -p 'LiteLLM key: ' LITELLM_KEY; echo\nexport LITELLM_KEY",
@@ -51,7 +51,7 @@
 - Check that the endpoint is authorized for the demonstration data.
 - The model identifier is a deployment-specific name, not an assumed default.
 
-== Step 4 — Build the chat payload
+== Step 4 — Build prompt
 // jq --rawfile inserts the entire JSON file as plain text into the prompt.
 #terminal("jq -n --rawfile data queue.json \\\n  --arg model \"$LITELLM_MODEL\" \\\n  '{model:$model,messages:[{role:\"user\", \\\n  content:(\"Summarize the hospital queue. \"+\n  \"Use only the JSON; report unknowns.\\n\"+$data)}]}' \\\n  > llm-request.json",
   title: [shell / JSON request], font-size: 8.5pt)
@@ -65,7 +65,7 @@
 
 - Inspect the status before attempting to parse the answer.
 
-== Step 6 — Read and evaluate
+== Step 6 — Check answer
 #terminal("jq -r '.choices[0].message.content' \\\n  llm-response.json",
   title: [shell / model answer], font-size: 9.5pt)
 

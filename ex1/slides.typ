@@ -5,9 +5,9 @@
 #import "../components/terminal.typ": terminal
 #show: touying-set-config.with(config-info(author: [Tanvir Ahmed]))
 
-= Exercise 1 — Registration and triage
+= Exercise 1
 
-== The mission: complete one triage
+== Mission: complete triage
 1. Register a *fictional patient*.
 2. Start triage in the related EpisodeOfCare.
 3. End triage.
@@ -15,7 +15,7 @@
 
 *Keep the patient and episode IDs for later exercises.*
 
-== Step 0 — Find the real operations
+== Step 0 — Find the API
 1. Open #link("https://ehr-test.ecreamproject.eu/dev")[the developer portal].
 2. Locate patient registration; record its method and path.
 3. Locate the EpisodeOfCare triage start and end operations.
@@ -34,7 +34,7 @@
 #terminal("read -rs -p 'Access token: ' TOKEN; echo\nexport TOKEN",
   title: [shell / credentials], font-size: 9.5pt)
 
-== Step 2 — Write the patient request
+== Step 2 — Patient JSON
 1. Open the registration request-body schema in OpenAPI.
 2. Copy its example JSON to a local file called patient.json.
 3. Enter a fictional name, surname, birth date and sex.
@@ -45,7 +45,7 @@
 
 *Use the actual field names from the schema.*
 
-== Step 3 — Register the patient
+== Step 3 — Register
 #terminal("curl -sS -D patient-headers.txt \\\n  -o patient-response.json -X POST \\\n  \"$API_BASE$PATIENT_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary @patient.json",
   title: [shell / registration], font-size: 9pt)
 
@@ -53,7 +53,7 @@
 - Inspect patient-response.json and save the patient identifier.
 - If the documented method is not POST, adapt the command.
 
-== Step 4 — Inspect the response
+== Step 4 — Check response
 #terminal("cat patient-headers.txt\njq . patient-response.json",
   title: [shell / inspect], font-size: 10pt)
 
@@ -81,7 +81,7 @@
 #terminal("curl -sS -D triage-end-headers.txt \\\n  -o triage-end-response.json -X POST \\\n  \"$API_BASE$TRIAGE_END_PATH\" \\\n  -H \"Authorization: Bearer $TOKEN\" \\\n  -H 'Content-Type: application/json' \\\n  --data-binary @triage-end.json",
   title: [shell / triage end], font-size: 9pt)
 
-== Step 7 — Find the priority code
+== Step 7 — Priority code
 #terminal("cat triage-end-headers.txt\njq . triage-end-response.json",
   title: [shell / triage result], font-size: 10pt)
 
