@@ -1,9 +1,8 @@
 name: Build Typst slides
 
+# Every push (to any branch) produces a separate PDF artifact.
 on:
   push:
-    branches:
-      - main
   workflow_dispatch:
 
 permissions:
@@ -14,7 +13,7 @@ jobs:
     name: Compile PDF
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout the triggering commit
         uses: actions/checkout@v4
 
       - name: Install Typst
@@ -22,12 +21,22 @@ jobs:
         with:
           typst-version: 0.15.1
 
-      - name: Compile presentation
+      - name: Compile the presentation
         run: typst compile --font-path font main.typ slides.pdf
 
-      - name: Upload PDF artifact
+      # GitHub Actions artifacts are attached to a workflow run, not committed
+      # to any branch. Include a sanitized branch name and run ID for clarity.
+      - name: Choose a branch-specific artifact name
+        id: artifact
+        shell: bash
+        run: |
+          safe_branch="${GITHUB_REF_NAME//\//-}"
+          echo "name=e-cream-slides-${safe_branch}-${GITHUB_RUN_ID}" >> "$GITHUB_OUTPUT"
+
+      - name: Upload compiled PDF
         uses: actions/upload-artifact@v4
         with:
-          name: e-cream-slides
+          name: ${{ steps.artifact.outputs.name }}
           path: slides.pdf
           if-no-files-found: error
+          retention-days: ${{ github.ref == 'refs/heads/main' && 90 || 14 }}
