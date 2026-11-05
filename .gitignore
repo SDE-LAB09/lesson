@@ -1,7 +1,7 @@
-# PDF generati da Typst (anche in sottocartelle)
+# Typst-generated PDFs (including nested directories)
 *.pdf
 
-# File temporanei/editor
+# Editor and operating-system temporary files
 .DS_Store
 *~
 *.swp
