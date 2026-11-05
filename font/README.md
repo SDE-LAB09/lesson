@@ -1,12 +1,9 @@
-# Font locali
+# Optional local fonts
 
-Inserire qui eventuali file di font personalizzati (`.ttf` o `.otf`),
-se la licenza consente di distribuirli nel repository.
+Put custom `.ttf` or `.otf` font files here only if their licenses permit redistribution.
 
-La compilazione locale e la GitHub Action includono questa directory
-con `--font-path font`.
+Local compilation and GitHub Actions both pass `--font-path font` to Typst.
 
-Per utilizzare un font aggiunto qui, aggiornare la proprietà `font`
-nel `#set text(...)` di `main.typ`.
+The Touying University theme uses fonts available in the Typst environment by default. If you want a custom font, configure it with `#set text(font: "Font Name")` in the shared presentation setup, and ensure the same font files are available in CI.
 
-In assenza di font personalizzati, la presentazione usa `Libertinus Sans`.
+Do not commit font files unless you have permission to distribute them.
