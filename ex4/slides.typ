@@ -5,7 +5,7 @@
 = Exercise 4 — Snapshot and discharge
 
 == Inspect the care episode
-- Call the documented /fhir/epofcare/$snapshot operation.
+- Call the documented `/fhir/epofcare/$snapshot` operation.
 - Inspect the JSON snapshot for the current EpisodeOfCare.
 - Identify relevant patient information and triage details.
 - Note any fields that are missing or unclear.
