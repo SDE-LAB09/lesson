@@ -1,28 +1,30 @@
-// Stile condiviso. Modificarlo solo quando serve uniformare tutte le slide.
-#let primary = rgb("176A96")
-#let dark = rgb("172A3A")
-#let muted = rgb("596D7E")
+// Shared Touying theme: update this file only when changing the whole deck.
+// The University theme provides the teal progress line, header, footer and section slides.
+// Documentation: https://touying-typ.github.io/docs/themes/university
+#import "@preview/touying:0.8.0": *
+#import themes.university: *
 
-#let cover(title, subtitle, authors) = [
-  #v(1.1cm)
-  #text(size: 14pt, weight: "bold", fill: primary)[PRESENTAZIONE DI GRUPPO]
-  #v(0.45cm)
-  #text(size: 45pt, weight: "bold", fill: dark)[#title]
-  #v(0.25cm)
-  #text(size: 20pt, fill: muted)[#subtitle]
-  #v(1.3cm)
-  #text(size: 14pt, fill: muted)[#authors]
-]
-
-// Ogni chiamata produce una nuova slide, senza dover inserire pagebreak a mano.
-#let slide(section, title, body) = [
-  #pagebreak()
-  #text(size: 11pt, weight: "bold", fill: primary)[e-CREAM / #section]
-  #v(0.25cm)
-  #text(size: 29pt, weight: "bold", fill: dark)[#title]
-  #v(0.25cm)
-  #rect(width: 1.8cm, height: 1.8pt, fill: primary, stroke: none)
-  #v(0.45cm)
-  #set text(size: 18pt)
-  #body
-]
+// Keep all colors and metadata in one place for consistent slides.
+#let presentation-theme = university-theme.with(
+  aspect-ratio: "16-9",
+  progress-bar: true,
+  config-colors(
+    primary: rgb("#04364A"),
+    secondary: rgb("#176B87"),
+    tertiary: rgb("#448C95"),
+    neutral-lightest: white,
+    neutral-darkest: black,
+  ),
+  config-info(
+    title: [e-CREAM],
+    short-title: [e-CREAM API Workshop],
+    subtitle: [Emergency care APIs, observability and AI],
+    author: [e-CREAM Team],
+    institution: [Software Design and Engineering Lab],
+    date: datetime.today(),
+    logo: none,
+  ),
+  // The author is read per slide; each chapter overrides config-info(author: ...).
+  footer-a: self => self.info.author,
+  footer-b: self => self.info.short-title,
+)

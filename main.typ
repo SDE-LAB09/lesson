@@ -1,40 +1,45 @@
-// Punto di ingresso comune della presentazione.
-// Ogni sezione è mantenuta in un file separato per ridurre i conflitti Git.
-#import "theme.typ": cover, slide
+// Entry point: the only file that controls the presentation order.
+// Contributors should normally edit only their own chapter's slides.typ file.
+#import "@preview/touying:0.8.0": *
+#import "theme.typ": presentation-theme
 
-#set document(title: "e-CREAM — Presentazione", author: "Gruppo e-CREAM")
-#set page(
-  width: 16cm,
-  height: 9cm,
-  margin: (x: 1.15cm, y: 0.9cm),
-  fill: rgb("F7FAFC"),
-  numbering: "1",
-  number-align: right,
-)
-#set text(font: "Libertinus Sans", size: 18pt, fill: rgb("172A3A"))
-#set par(leading: 0.5em)
-
-#cover(
-  "e-CREAM",
-  "Presentazione del progetto e attività pratiche",
-  "Gruppo di lavoro — 5 studenti",
+#set document(
+  title: "e-CREAM — Emergency Care API Workshop",
+  author: ("Matteo", "Tanvir", "Lorys", "Marco", "Federico"),
 )
 
-#slide("Introduzione", "Programma della lezione")[
-  - *Theory* — introduzione e concetti fondamentali
-  - *Ex 1* — primo esercizio
-  - *Ex 2* — secondo esercizio
-  - *Ex 3* — terzo esercizio
-  - *Ex 4* — quarto esercizio
-]
+// The theme creates slide pages from level-two headings (==).
+// Level-one headings (=) create section divider slides automatically.
+#show: presentation-theme
 
-// Sezioni: in genere ciascuno modifica soltanto il file assegnato.
+// The title slide lists everyone; individual chapters change the footer author.
+#title-slide(authors: (
+  [Matteo],
+  [Tanvir],
+  [Lorys],
+  [Marco],
+  [Federico],
+))
+
+== Workshop roadmap <touying:hidden>
+
+- *Theory* — e-CREAM, service architecture and OpenAPI (Matteo)
+- *Exercise 1* — patient registration and triage (Tanvir)
+- *Exercise 2* — failed requests and Grafana (Lorys)
+- *Exercise 3* — queue analysis with LiteLLM (Marco)
+- *Exercise 4* — patient snapshot and discharge (Federico)
+
+// Each include keeps a chapter separate to reduce merge conflicts.
+// The order here is the speaking order; do not put chapter text in main.typ.
 #include "theory/slides.typ"
 #include "ex1/slides.typ"
 #include "ex2/slides.typ"
 #include "ex3/slides.typ"
 #include "ex4/slides.typ"
 
-#slide("Conclusione", "Domande?")[
-  Riepilogo e discussione finale.
+// Focus slides are useful for transitions and the final discussion.
+#focus-slide[
+  *Questions?*
+
+  e-CREAM API workshop
 ]
