@@ -1,5 +1,6 @@
 // Shared entry point: edit only to change the order of chapters.
 #import "@preview/touying:0.7.4": *
+#import themes.university: title-slide, focus-slide
 #import "theme.typ": presentation-theme
 
 #set document(
