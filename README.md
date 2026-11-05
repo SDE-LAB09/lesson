@@ -27,6 +27,9 @@ Use fictional or appropriately de-identified data for every exercise, especially
 ├── ex2/slides.typ            # Lorys
 ├── ex3/slides.typ            # Marco
 ├── ex4/slides.typ            # Federico
+├── components/
+│   ├── terminal.typ         # Shared dark terminal window
+│   └── diagrams.typ         # Fletcher architecture/flow diagrams
 ├── font/README.md           # Optional custom font directory
 ├── .github/workflows/
 │   └── build-slides.yml      # Compile and publish PDF artifacts
@@ -57,7 +60,9 @@ Touying is fetched automatically from Typst Universe on first compilation, so th
 3. Add a section divider using `= Section title` and a regular slide using `== Slide title`. The Touying theme creates the slide layout.
 4. Use `#pause` inside a slide to reveal the next item in a later PDF page (animation step).
 5. Your chapter sets the speaker's footer using `#show: touying-set-config.with(config-info(author: [Your name]))`. Do not change the global author in `theme.typ`.
-6. Compile locally before opening a pull request. Avoid editing `main.typ` or `theme.typ` unless everyone agrees.
+6. Use `#import "../components/terminal.typ": terminal` for shell and JSON examples. Do not reimplement terminal window styling in each chapter.
+7. Use the shared diagrams in `components/diagrams.typ` (Fletcher 0.5.8). Diagrams should be updated centrally and reviewed for accuracy.
+8. Compile locally before opening a pull request. Avoid editing `main.typ` or `theme.typ` unless everyone agrees.
 
 Basic example:
 
@@ -87,3 +92,35 @@ Each run is an immutable snapshot of the branch at the triggering commit. When c
 - [Typst](https://typst.app/docs/)
 - [Touying University theme](https://touying-typ.github.io/docs/themes/university/)
 - [e-CREAM developer portal](https://ehr-test.ecreamproject.eu/dev)
+
+## Course material and source accuracy
+
+The theory chapter and diagrams are teaching adaptations of **eCREAM Deliverable D3.2: Architectural Design**, final version dated **29 November 2024**. That document describes a **hybrid approach**: begin as a modular monolith, with the possibility of later separating highly cohesive, loosely coupled modules. Its conceptual architecture covers ER and admin dashboards, Web and FHIR APIs, process modules, data stores, OIDC/JWT authentication, authorization and the patient journey. Its diagrams are design-stage views, not proof that today's test instance is deployed exactly in that form.
+
+The exercises follow the team's lesson plan. The live test portal was not accessible during drafting, so the slides **do not claim verified endpoint signatures**. Paths shown as placeholders and sample HTTP methods must be replaced with the values listed in [the current e-CREAM OpenAPI portal](https://ehr-test.ecreamproject.eu/dev). The snapshot path comes from the team's own plan and must also be checked before the lesson.
+
+### Student preparation checklist
+
+1. Install Typst for preparing slides; for API exercises install curl and jq (or an equivalent API client).
+2. Obtain the sandbox server URL and an authorized test access token from the instructors.
+3. In the OpenAPI portal, find the operations for registration, triage start/end, patient queue, EpisodeOfCare snapshot and discharge.
+4. Copy valid JSON request examples from the actual schema. Do not substitute invented field names.
+5. Obtain the LiteLLM chat-completions URL, model identifier and demonstration key from the instructors.
+6. Obtain access to the designated Grafana instance and its logs data source.
+7. Use synthetic patient data only. Keep secrets out of Git and screenshots.
+
+### Reusable visual components
+
+`components/terminal.typ` exposes a terminal window with a dark background and red, yellow and green controls. The argument is a plain string, so shell symbols are displayed literally:
+
+```typst
+#import "../components/terminal.typ": terminal
+
+#terminal("curl -sS \"$API_BASE$QUEUE_PATH\"", title: [shell])
+```
+
+`components/diagrams.typ` uses [Fletcher](https://typst.app/universe/package/fletcher/) to express editable architecture diagrams as Typst source. Its functions are imported into the theory chapter. The figures intentionally simplify D3.2: review changes against the source document and avoid misrepresenting architecture *proposals* as verified details of the current deployment.
+
+### Footer and speaker ownership
+
+The cover lists all five full names in the order decided by the team. The opening Lesson roadmap uses a footer-free focus slide; chapters set their own author footer, with the current speaker's full name. The closing Questions slide is also a team-wide focus slide.
