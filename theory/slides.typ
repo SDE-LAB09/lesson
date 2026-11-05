@@ -1,6 +1,6 @@
 // Matteo's chapter. The footer author is configured for this section.
 #import "@preview/touying:0.7.4": *
-#show: touying-set-config.with(config-info(author: [Matteo]))
+#show: touying-set-config.with(config-info(author: [Matteo Girardi]))
 
 // A single equals sign creates a section divider slide automatically.
 = Theory — e-CREAM and its APIs
@@ -28,7 +28,7 @@
 - Key concepts include Patient and EpisodeOfCare.
 - Use the actual schema before writing any request payload.
 
-== Workshop journey
+== Lesson journey
 1. Register a patient and complete triage.
 2. Send invalid requests and investigate Grafana logs.
 3. Retrieve the queue and summarize it with LiteLLM.

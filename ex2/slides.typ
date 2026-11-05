@@ -1,6 +1,6 @@
 // Lorys's chapter. All headings and comments are in English.
 #import "@preview/touying:0.7.4": *
-#show: touying-set-config.with(config-info(author: [Lorys]))
+#show: touying-set-config.with(config-info(author: [Lorys Mutti]))
 
 = Exercise 2 — Observability
 

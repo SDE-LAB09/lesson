@@ -1,4 +1,4 @@
-# e-CREAM — Typst Workshop Slides
+# e-CREAM — Typst Lesson Slides
 
 This repository contains the shared presentation for the e-CREAM Software Design and Engineering lab. It uses [Typst](https://typst.app/) with the [Touying University theme](https://touying-typ.github.io/docs/themes/university/) (version 0.7.4).
 
@@ -6,11 +6,11 @@ This repository contains the shared presentation for the e-CREAM Software Design
 
 | Chapter | Speaker | Lesson content |
 | --- | --- | --- |
-| Theory | Matteo | e-CREAM architecture, service-oriented systems, OpenAPI and FHIR resources; approximately 10–15 minutes |
-| Exercise 1 | Tanvir | Register a patient, start triage through EpisodeOfCare, end triage and inspect the priority code |
-| Exercise 2 | Lorys | Introduce microservice observability, generate invalid API requests and inspect Grafana logs |
-| Exercise 3 | Marco | Introduce the OpenAI-compatible LiteLLM endpoint, retrieve a patient queue and ask an LLM to summarize the hospital situation |
-| Exercise 4 | Federico | Retrieve the EpisodeOfCare snapshot, use LiteLLM to summarize it, discharge the fictional patient and submit the saved summary |
+| Theory | Matteo Girardi | e-CREAM architecture, service-oriented systems, OpenAPI and FHIR resources; approximately 10–15 minutes |
+| Exercise 1 | Tanvir Ahmed | Register a patient, start triage through EpisodeOfCare, end triage and inspect the priority code |
+| Exercise 2 | Lorys Mutti | Introduce microservice observability, generate invalid API requests and inspect Grafana logs |
+| Exercise 3 | Marco Toniolo | Introduce the OpenAI-compatible LiteLLM endpoint, retrieve a patient queue and ask an LLM to summarize the hospital situation |
+| Exercise 4 | Federico Frigerio | Retrieve the EpisodeOfCare snapshot, use LiteLLM to summarize it, discharge the fictional patient and submit the saved summary |
 
 **Important:** The chapter content is a starting draft, not verified API documentation. For exact routes, payloads, authentication and response schemas, consult [the e-CREAM developer portal](https://ehr-test.ecreamproject.eu/dev). The snapshot route referenced by the lesson plan is `/fhir/epofcare/$snapshot`. Other operations should be discovered from the deployed OpenAPI specification.
 

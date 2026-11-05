@@ -1,6 +1,6 @@
 // Tanvir's chapter. Add slides using headings that begin with ==.
 #import "@preview/touying:0.7.4": *
-#show: touying-set-config.with(config-info(author: [Tanvir]))
+#show: touying-set-config.with(config-info(author: [Tanvir Ahmed]))
 
 = Exercise 1 — Registration and triage
 
@@ -21,7 +21,7 @@
 
 == Steps 2–3: triage
 - Find the EpisodeOfCare triage start operation (the start action).
-- Submit the provided workshop payload.
+- Submit the provided lesson payload.
 - Finish triage using the end action.
 - Inspect the returned priority code.
 

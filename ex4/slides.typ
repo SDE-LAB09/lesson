@@ -1,6 +1,6 @@
 // Federico's chapter. Each == heading adds a slide in Touying.
 #import "@preview/touying:0.7.4": *
-#show: touying-set-config.with(config-info(author: [Federico]))
+#show: touying-set-config.with(config-info(author: [Federico Frigerio]))
 
 = Exercise 4 — Snapshot and discharge
 

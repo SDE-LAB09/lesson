@@ -15,7 +15,7 @@
   ),
   config-info(
     title: [e-CREAM],
-    short-title: [e-CREAM Workshop],
+    short-title: [e-CREAM Lesson],
     subtitle: [Emergency care APIs, observability and AI],
     author: [e-CREAM Team],
     institution: [Software Design and Engineering Lab],

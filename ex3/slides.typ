@@ -1,6 +1,6 @@
 // Marco's chapter. Replace example prompts only after reviewing test data.
 #import "@preview/touying:0.7.4": *
-#show: touying-set-config.with(config-info(author: [Marco]))
+#show: touying-set-config.with(config-info(author: [Marco Toniolo]))
 
 = Exercise 3 — Queue insights with LiteLLM
 
